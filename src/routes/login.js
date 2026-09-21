@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router()
+const { PrismaClient } = require('@prisma/client') 
 
-// Temporär "databas", ersätts senare med riktig DB
-const tempData = [
-    { "text": "Hello" },
-    { "text": "morjens" }
-]
+const prisma = new PrismaClient()
 
-router.get('/', (req, res) => {
-    res.send(tempData)
+router.get('/', async (req, res) => {
+    const users = await prisma.user.findMany({
+        orderBy: {id: 'asc'}
+    })
+    res.send(users)
 })
 
 router.post('/', (req, res) => {

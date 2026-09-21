@@ -8,11 +8,11 @@ console.log(`Node.js ${process.version}`)
 app.use(express.json())
 
 app.get('/', (req, res) => {
-    res.json({ msg: "Notes API", version: "0.1" })
+    res.json({ msg: "login API", version: "0.1" })
 })
 
-const notesRouter = require('./routes/notes')
-app.use('/notes', notesRouter)
+const loginRouter = require('./routes/login')
+app.use('/login', loginRouter)
 
 
 

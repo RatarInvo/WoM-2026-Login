@@ -1,4 +1,4 @@
-GET http://localhost:8080/notes
+GET http://localhost:3000/
 
 ### Skapa ny note
 POST http://localhost:8080/notes

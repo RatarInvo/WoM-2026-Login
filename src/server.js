@@ -12,7 +12,9 @@ app.get('/', (req, res) => {
 })
 
 const loginRouter = require('./routes/login')
+const registerRouter = require('./routes/register')
 app.use('/login', loginRouter)
+app.use('/register', registerRouter)
 
 
 

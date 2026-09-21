@@ -1,20 +1,26 @@
-GET http://localhost:3000/
+# Rest-client stöder .env
+#@API_URL = {{$dotenv PRODUCTION_API}}
+@API_URL = http://localhost:3000
+GET {{API_URL}}/login
 
 ### Skapa ny note
-POST http://localhost:8080/notes
+POST {{API_URL}}/register
 Content-Type: application/json
 
 {
-    "text": "POST funkar!"
+   "username": "Frissppe",
+   "password_hash": "Dettaärddettlösenord",
+   "role": "admin"
+
 }
 
 ### Uppdatera note
-PUT http://localhost:8080/notes/2
+PUT {{API_URL}}/login/4
 Content-Type: application/json
 
 {
-    "text": "Ny text!!"
+    "note": "Ny text!!"
 }
 
 ### Uppdatera note
-DELETE http://localhost:8080/notes/2
+DELETE {{API_URL}}/login/4

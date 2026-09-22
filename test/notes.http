@@ -6,6 +6,7 @@
 @DEV_TOKEN = {{$dotenv DEV_TOKEN}}
 
 GET {{API_URL}}/login
+Authorization: Bearer {{DEV_TOKEN}}
 
 
 ###endpoint för att hämta en specifik note
@@ -17,7 +18,7 @@ Content-Type: application/json
 
 {
    "username": "ratar",
-   "password_hash": "Dettaärssssssddettlösenord"
+   "password_hash": "Dettaärsssddettlösenord"
 }
 
 ### Skapa ny note

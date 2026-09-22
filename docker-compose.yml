@@ -9,3 +9,5 @@ services:
       - "3000:3000"
     environment:
       - MODE
+      - DATABASE_URL
+      - JWT_SECRET

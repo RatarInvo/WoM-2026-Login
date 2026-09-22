@@ -4,7 +4,6 @@ require('dotenv').config()
 const PORT = process.env.PORT || 3000
 
 console.log(`Node.js ${process.version}`)
-
 app.use(express.json())
 
 app.get('/', (req, res) => {

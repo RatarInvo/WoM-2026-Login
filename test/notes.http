@@ -1,16 +1,33 @@
 # Rest-client stöder .env
 #@API_URL = {{$dotenv PRODUCTION_API}}
 @API_URL = http://localhost:3000
+
+
+@DEV_TOKEN = {{$dotenv DEV_TOKEN}}
+
 GET {{API_URL}}/login
+
+
+###endpoint för att hämta en specifik note
+GET {{API_URL}}/login/6f128bb3-9111-44e1-9e2a-194d272d8af1
+
+### logga in
+POST {{API_URL}}/login
+Content-Type: application/json
+
+{
+   "username": "ratar",
+   "password_hash": "Dettaärssssssddettlösenord"
+}
 
 ### Skapa ny note
 POST {{API_URL}}/register
 Content-Type: application/json
 
 {
-   "username": "Frissppe",
-   "password_hash": "Dettaärddettlösenord",
-   "role": "admin"
+   "username": "ratar",
+   "password_hash": "Dettaärsssddettlösenord",
+   "role": "user"
 
 }
 

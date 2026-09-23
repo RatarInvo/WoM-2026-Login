@@ -25,9 +25,10 @@ POST {{API_URL}}/register
 Content-Type: application/json
 
 {
-   "username": "Hero",
+   "username": "Herssso",
    "password_hash": "password123",
-   "role": "user"
+   "role": "user",
+   "email": "hero@example.com"
 
 }
 

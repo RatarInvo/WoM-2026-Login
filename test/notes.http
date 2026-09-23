@@ -6,7 +6,6 @@
 @DEV_TOKEN = {{$dotenv DEV_TOKEN}}
 
 GET {{API_URL}}/login
-Authorization: Bearer {{DEV_TOKEN}}
 
 
 ###endpoint för att hämta en specifik note
@@ -17,8 +16,8 @@ POST {{API_URL}}/login
 Content-Type: application/json
 
 {
-   "username": "ratar",
-   "password_hash": "Dettaärsssddettlösenord"
+   "username": "Albin",
+   "password_hash": "password123"
 }
 
 ### Skapa ny note
@@ -26,8 +25,8 @@ POST {{API_URL}}/register
 Content-Type: application/json
 
 {
-   "username": "ratar",
-   "password_hash": "Dettaärsssddettlösenord",
+   "username": "Hero",
+   "password_hash": "password123",
    "role": "user"
 
 }
@@ -41,4 +40,4 @@ Content-Type: application/json
 }
 
 ### Uppdatera note
-DELETE {{API_URL}}/login/4
+DELETE {{API_URL}}/login/

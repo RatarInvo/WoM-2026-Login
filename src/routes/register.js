@@ -19,7 +19,8 @@ router.post('/', async (req, res) => {
         data: { 
             username: req.body.username, 
             password_hash: password_hash,
-            role: req.body.role
+            role: req.body.role,
+            email: req.body.email
         }
     })
     res.send({

@@ -15,9 +15,11 @@ app.get('/', (req, res) => {
 
 const loginRouter = require('./routes/login')
 const registerRouter = require('./routes/register')
+const passwordRouter = require('./routes/password')
 
 app.use('/login', loginRouter)
 app.use('/register', registerRouter)
+app.use('/password', passwordRouter)
 
 app.listen(PORT, () => {
     console.log(`Running on http://localhost:${PORT}`)

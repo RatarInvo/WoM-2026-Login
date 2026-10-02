@@ -11,3 +11,14 @@ services:
       - MODE
       - DATABASE_URL
       - JWT_SECRET
+      - SMTP_HOST=mailpit
+      - SMTP_PORT=1025
+      - FRONTEND_URL=${FRONTEND_URL:-http://127.0.0.1:5500}
+    depends_on:
+      - mailpit
+
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"

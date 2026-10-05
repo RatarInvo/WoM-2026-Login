@@ -9,7 +9,9 @@ const PORT = process.env.PORT || 3000
 app.use(cors())
 app.use(express.json())
 
-app.get('/', (req, res) => {
+app.use('/', express.static(__dirname + '/static'))
+
+app.get('/health', (req, res) => {
     res.json({ msg: "login API", version: "0.1" })
 })
 

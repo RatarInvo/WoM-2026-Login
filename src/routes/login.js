@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { PrismaClient } = require('@prisma/client')  // object destructuring
-//const authorize = require('../middleware/authorize')
+const authorize = require('../middleware/authorize')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -9,7 +9,11 @@ const prisma = new PrismaClient()
 
 //router.use(authorize)
 
-router.get('/', async (req, res) => {
+router.get('/', authorize, async (req, res) => {
+    if (req.authUser.role !== 'admin') {
+        return res.status(403).json({ msg: "Admin access required" })
+    }
+
     const users = await prisma.users.findMany({
         orderBy: { id: 'asc' }
     })
@@ -64,9 +68,9 @@ router.put('/:id', async (req, res) => {
     })
 
     res.send({
-        msg: "Note updated", 
+        msg: "User updated", 
         id: note.id,
-        updatedNote: note
+        updatedUser: note
     })
 })
 
@@ -77,7 +81,7 @@ router.delete('/:id', async (req, res) => {
     })
 
     res.send({
-        msg: "Note deleted", 
+        msg: "User deleted", 
         id: note.id
     })
 })

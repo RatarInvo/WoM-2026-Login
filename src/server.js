@@ -23,6 +23,15 @@ app.use('/login', loginRouter)
 app.use('/register', registerRouter)
 app.use('/password', passwordRouter)
 
+app.use((error, req, res, next) => {
+    if (error.type === 'entity.parse.failed') {
+        return res.status(400).json({ msg: 'Invalid JSON in request body' })
+    }
+
+    console.error(`${req.method} ${req.originalUrl} failed:`, error)
+    res.status(500).json({ msg: 'Something went wrong on the server. Please try again.' })
+})
+
 app.listen(PORT, () => {
     console.log(`Running on ${PORT}`)
 })

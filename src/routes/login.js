@@ -31,6 +31,9 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+    if (!req.body?.username || !req.body?.password_hash) {
+        return res.status(400).json({ msg: "Username and password are required" })
+    }
 
     const dbUser = await prisma.users.findUnique({
         where: { username: req.body.username }

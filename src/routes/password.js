@@ -80,7 +80,7 @@ router.post('/reset', async (req, res) => {
 
     const user = await prisma.users.findUnique({
         where: { id: decoded.sub }
-    })
+    }).catch(() => null)
     if (!user) {
         return res.status(400).json({ msg: "Invalid or expired reset link" })
     }

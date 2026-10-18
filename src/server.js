@@ -6,8 +6,18 @@ require('dotenv').config()
 
 const PORT = process.env.PORT || 3000
 
-app.use(cors())
+const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:4000'
+
+if (!allowedOrigin) {
+    throw new Error('CLIENT_ORIGIN is missing')
+}
+
+app.use(cors({
+    origin: allowedOrigin
+}))
+
 app.use(express.json())
+
 
 app.use('/', express.static(__dirname + '/static'))
 
@@ -18,10 +28,12 @@ app.get('/health', (req, res) => {
 const loginRouter = require('./routes/login')
 const registerRouter = require('./routes/register')
 const passwordRouter = require('./routes/password')
+const refreshRouter = require('./routes/refresh.js')
 
 app.use('/login', loginRouter)
 app.use('/register', registerRouter)
 app.use('/password', passwordRouter)
+app.use('/refresh', refreshRouter)
 
 app.use((error, req, res, next) => {
     if (error.type === 'entity.parse.failed') {

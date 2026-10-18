@@ -1,0 +1,54 @@
+# Rest-client stöder .env
+#@API_URL = {{$dotenv PRODUCTION_API}}
+@API_URL = http://localhost:4000
+@LOGIN_API_URL = http://localhost:3000
+@ACCESS_TOKEN = {{$dotenv ACCESS_TOKEN}}
+@REFRESH_TOKEN = {{$dotenv REFRESH_TOKEN}}
+
+
+GET {{LOGIN_API_URL}}/login
+
+
+###endpoint för att hämta en specifik note
+GET {{LOGIN_API_URL}}/login/88b02991-d5dd-4149-bcf9-ca89ff62f17b
+
+### logga in
+POST {{LOGIN_API_URL}}/login
+Content-Type: application/json
+
+{
+   "username": "Albin",
+   "password_hash": "password123"
+}
+
+### Skapa ny note
+POST {{LOGIN_API_URL}}/register
+Content-Type: application/json
+
+{
+   "username": "Herssso",
+   "password_hash": "password123",
+   "role": "user",
+   "email": "hero@example.com"
+
+}
+
+### Uppdatera note
+PUT {{LOGIN_API_URL}}/login/4
+Content-Type: application/json
+
+{
+    "note": "Ny text!!"
+}
+
+
+
+GET {{API_URL}}
+
+#### refresh token
+POST {{LOGIN_API_URL}}/refresh
+Authorization: Bearer {{REFRESH_TOKEN}}
+
+#### Logga ut
+DELETE {{LOGIN_API_URL}}/refresh
+Authorization: Bearer {{REFRESH_TOKEN}}

@@ -5,6 +5,12 @@ const authorize = require('../middleware/authorize')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+const {
+    createAccessToken,
+    createRefreshToken,
+    refreshTokenExpiration
+} = require('../auth/tokens')
+
 const prisma = new PrismaClient()
 
 //router.use(authorize)
@@ -49,16 +55,25 @@ router.post('/', async (req, res) => {
         return res.status(401).json({ msg: "Authentication failed" })
     }
 
-    const token = jwt.sign(
-        { sub: dbUser.id, name: dbUser.username, role: dbUser.role },
-        process.env.JWT_SECRET,
-        { expiresIn: '30d' }
-    )
+    const accessToken = createAccessToken(dbUser)
+    const refreshToken = createRefreshToken()
+    const expiresAt = refreshTokenExpiration()
+
+    await prisma.refreshToken.create({
+        data: {
+            user_id: dbUser.id,
+            token: refreshToken,
+            expires_at: expiresAt
+        }
+    })
     
     res.send({
-        msg: "Login successful", 
+        msg: 'Login successful',
         id: dbUser.id,
-        token: token
+        token: accessToken,
+        accessToken,
+        refreshToken,
+        expiresAt
     })
 })
 

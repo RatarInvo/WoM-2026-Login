@@ -1,10 +1,6 @@
 const express = require('express')
 const { PrismaClient } = require('@prisma/client')
-
-const {
-    createAccessToken,
-    refreshTokenExpiration
-} = require('../auth/tokens')
+const { createAccessToken } = require('../auth/tokens')
 
 const router = express.Router()
 const prisma = new PrismaClient()
@@ -16,67 +12,66 @@ function getRefreshToken(req) {
         return null
     }
 
-    return authorization.substring('Bearer '.length).trim()
+    return authorization
+        .substring('Bearer '.length)
+        .trim()
 }
 
 router.post('/', async (req, res) => {
-    const token = getRefreshToken(req)
+    try {
+        const token = getRefreshToken(req)
 
-    if (!token) {
-        return res.status(401).json({
-            msg: 'Refresh token missing'
-        })
-    }
-
-    const storedToken = await prisma.refreshToken.findUnique({
-        where: {
-            token
-        },
-        include: {
-            user: true
+        if (!token) {
+            return res.status(401).json({
+                msg: 'Refresh token missing'
+            })
         }
-    })
 
-    if (!storedToken) {
-        return res.status(401).json({
-            msg: 'Refresh token invalid'
+        const storedToken = await prisma.refreshToken.findUnique({
+            where: { token },
+            include: { user: true }
+        })
+
+        if (!storedToken) {
+            return res.status(401).json({
+                msg: 'Refresh token invalid'
+            })
+        }
+
+        if (storedToken.expires_at <= new Date()) {
+            await prisma.refreshToken.delete({
+                where: { id: storedToken.id }
+            })
+
+            return res.status(401).json({
+                msg: 'Refresh token expired'
+            })
+        }
+
+        const accessToken = createAccessToken(storedToken.user)
+
+        return res.json({
+            accessToken
+        })
+    } catch (error) {
+        console.error('Refresh failed:', error)
+
+        return res.status(500).json({
+            msg: 'Could not refresh access token'
         })
     }
-
-    if (storedToken.expires_at <= new Date()) {
-        await prisma.refreshToken.delete({
-            where: {
-                id: storedToken.id
-            }
-        })
-
-        return res.status(401).json({
-            msg: 'Refresh token expired'
-        })
-    }
-
-    const accessToken = createAccessToken(storedToken.user)
-
-    res.json({
-        accessToken,
-        expiresAt: refreshTokenExpiration()
-    })
 })
 
 router.delete('/', async (req, res) => {
     const token = getRefreshToken(req)
 
-    if (!token) {
-        return res.status(204).end()
+    if (token) {
+        await prisma.refreshToken.deleteMany({
+            where: { token }
+        })
     }
 
-    await prisma.refreshToken.deleteMany({
-        where: {
-            token
-        }
-    })
-
-    res.status(204).end()
+    return res.status(204).end()
 })
 
 module.exports = router

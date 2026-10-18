@@ -6,14 +6,14 @@ require('dotenv').config()
 
 const PORT = process.env.PORT || 3000
 
-const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:4000'
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5500')
 
-if (!allowedOrigin) {
+if (allowedOrigins.length === 0) {
     throw new Error('CLIENT_ORIGIN is missing')
 }
 
 app.use(cors({
-    origin: allowedOrigin
+    origin: allowedOrigins
 }))
 
 app.use(express.json())
